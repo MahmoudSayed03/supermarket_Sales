@@ -1,0 +1,74 @@
+--Create DB
+CREATE DATABASE supermarket_sales;
+
+--Use DB
+USE supermarket_sales;
+
+-- Branch Dimension Table
+CREATE TABLE Branch_Dimension (
+    Branch_ID INT PRIMARY KEY,
+    Branch NVARCHAR(255) ,
+    City NVARCHAR(225)
+);
+
+-- Customer Dimension Table
+CREATE TABLE Customer_Dimension (
+    Customer_ID INT PRIMARY KEY, 
+    Customer_Type NVARCHAR(255),
+	Loyalty_Status NVARCHAR(255),
+    Gender NVARCHAR(255),
+	Age INT
+);
+
+-- Product Dimension Table
+CREATE TABLE Product_Dimension (
+    product_ID INT PRIMARY KEY,
+    Product_Line NVARCHAR(255)
+);
+
+-- Time Dimension Table
+CREATE TABLE Time_Dimension (
+    ID INT PRIMARY KEY,
+    Date DATE ,
+    Time TIME,
+    Month INT,
+    Quarter INT,
+    Year INT,
+	Day INT,
+    Day_of_Week NVARCHAR(225),
+    Hour INT
+);
+
+-- Payment Dimension Table
+CREATE TABLE Payment_Dimension (
+    Payment_ID INT PRIMARY KEY,
+    Payment NVARCHAR(225) 
+);
+
+-- Sales Fact Table
+CREATE TABLE Sales_Fact (
+    Invoice_ID INT PRIMARY KEY,
+    Branch_ID INT,
+    Customer_ID INT,
+    product_ID INT,
+    ID INT,
+    Payment_ID INT,
+    Unit_Price DECIMAL(10, 2),
+    Quantity INT,
+    Tax DECIMAL(10, 2),
+    Total DECIMAL(10, 2),
+    COGS DECIMAL(10, 2),
+    Gross_Margin_Percentage DECIMAL(5, 2),
+    Gross_Income DECIMAL(10, 2),
+    Rating INT,
+	Profit_Margin DECIMAL(10, 2),
+    FOREIGN KEY (Branch_ID) REFERENCES Branch_Dimension(Branch_ID),
+    FOREIGN KEY (Customer_ID) REFERENCES Customer_Dimension(Customer_ID),
+    FOREIGN KEY (product_ID) REFERENCES Product_Dimension(product_ID),
+    FOREIGN KEY (ID) REFERENCES Time_Dimension(ID),
+    FOREIGN KEY (Payment_ID) REFERENCES Payment_Dimension(Payment_ID)
+);
+
+DROP Table Sales_Fact;
+DROP Table Customer_Dimension;
+DROP Table Time_Dimension;
